@@ -1,13 +1,26 @@
 version: 0.2
+
 phases:
   install:
     commands:
+      - echo "Installing dependencies"
       - npm install
   build:
     commands:
+      - echo "Building the Layer"
       - mkdir -p layer/nodejs
       - cp -R node_modules layer/nodejs/
       - cd layer && zip -r layer.zip nodejs
-      - aws lambda publish-layer-version --layer-name my-layer-name --zip-file fileb://layer.zip --compatible-runtimes nodejs22.x
+      - cd ..
+      - echo "Zipping Lambda function"
       - zip -r function.zip index.js
+  post_build:
+    commands:
+      - echo "Publishing Layer"
+      - aws lambda publish-layer-version --layer-name my-layer-name --zip-file fileb://layer/layer.zip --compatible-runtimes nodejs22.x
+      - echo "Updating Lambda Function"
       - aws lambda update-function-code --function-name my-lambda-name --zip-file fileb://function.zip
+
+artifacts:
+  files:
+    - function.zip
