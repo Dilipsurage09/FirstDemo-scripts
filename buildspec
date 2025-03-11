@@ -17,9 +17,9 @@ phases:
   post_build:
     commands:
       - echo "Publishing Layer"
-      - aws lambda publish-layer-version --layer-name my-layer-name --zip-file fileb://layer/layer.zip --compatible-runtimes nodejs22.x
+      - aws lambda publish-layer-version --layer-name mylambdafunction-11 --zip-file fileb://layer/layer.zip --compatible-runtimes nodejs22.x
       - echo "Updating Lambda Function"
-      - aws lambda update-function-code --function-name my-lambda-name --zip-file fileb://function.zip
+      - aws lambda update-function-code --function-name mylambdafunction-11 --zip-file fileb://function.zip
 
 artifacts:
   files:
